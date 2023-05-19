@@ -60,7 +60,7 @@ def train(model, criterion, optimizer, scheduler, train_loader, valid_loader, de
 
             code_input_ids, code_mask = code['input_ids'].to(device), code['attention_mask'].to(device)
             code_input_ids, code_mask = code_input_ids.squeeze(1), code_mask.squeeze(1)
-
+            labels = labels.to(device)
             outputs = model(message_input_ids, message_mask, code_input_ids, code_mask)
 
             _, predicted = torch.max(outputs.data, 1)
@@ -120,6 +120,7 @@ def train(model, criterion, optimizer, scheduler, train_loader, valid_loader, de
 
                 code_input_ids, code_mask = code['input_ids'].to(device), code['attention_mask'].to(device)
                 code_input_ids, code_mask = code_input_ids.squeeze(1), code_mask.squeeze(1)
+                labels = labels.to(device)
                 outputs = model(message_input_ids, message_mask, code_input_ids, code_mask)
 
                 loss = criterion(outputs, labels)
