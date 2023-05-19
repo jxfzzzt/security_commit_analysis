@@ -21,7 +21,7 @@ class CodeModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.codebert = AutoModel.from_pretrained("microsoft/codebert-base")
-        self.drop = nn.Dropout(dropout)
+        self.dropout = nn.Dropout(dropout)
         self.linear = nn.Linear(768, 384)
 
     def forward(self, input_id, mask):
