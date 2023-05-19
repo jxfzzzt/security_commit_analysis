@@ -56,7 +56,11 @@ def train(model, criterion, optimizer, scheduler, train_loader, valid_loader, de
         correct_nums = 0
         for iter_num, (message, code, labels) in enumerate(train_loader):
             message_input_ids, message_mask = message['input_ids'].to(device), message['attention_mask'].to(device)
+            message_input_ids, message_mask = message_input_ids.squeeze(1), message_mask.squeeze(1)
+
             code_input_ids, code_mask = code['input_ids'].to(device), code['attention_mask'].to(device)
+            code_input_ids, code_mask = code_input_ids.squeeze(1), code_mask.squeeze(1)
+
             outputs = model(message_input_ids, message_mask, code_input_ids, code_mask)
 
             _, predicted = torch.max(outputs.data, 1)
@@ -112,7 +116,10 @@ def train(model, criterion, optimizer, scheduler, train_loader, valid_loader, de
             total_valid_acc = 0
             for message, code, labels in valid_loader:
                 message_input_ids, message_mask = message['input_ids'].to(device), message['attention_mask'].to(device)
+                message_input_ids, message_mask = message_input_ids.squeeze(1), message_mask.squeeze(1)
+
                 code_input_ids, code_mask = code['input_ids'].to(device), code['attention_mask'].to(device)
+                code_input_ids, code_mask = code_input_ids.squeeze(1), code_mask.squeeze(1)
                 outputs = model(message_input_ids, message_mask, code_input_ids, code_mask)
 
                 loss = criterion(outputs, labels)

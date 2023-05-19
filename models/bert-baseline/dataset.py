@@ -126,4 +126,5 @@ if __name__ == '__main__':
         print(message['input_ids'].shape, message['attention_mask'].shape)
         print(code['input_ids'].shape, code['attention_mask'].shape)
         print(label.shape)
+        print(message['input_ids'])
         break
