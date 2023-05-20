@@ -37,8 +37,8 @@ class Dataset(torch.utils.data.Dataset):
                     deleted_lines.append(line[1:].strip())
             added_str = ' '.join(added_lines).strip()
             deleted_str = ' '.join(deleted_lines).strip()
-            print('add', added_str)
-            print('delete', deleted_str)
+            # print('add', added_str)
+            # print('delete', deleted_str)
             self.codes.append(
                 code_tokenizer(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
                                truncation=True, return_tensors="pt"))
