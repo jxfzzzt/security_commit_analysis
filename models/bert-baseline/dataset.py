@@ -40,7 +40,7 @@ class Dataset(torch.utils.data.Dataset):
             # print('add', added_str)
             # print('delete', deleted_str)
             self.codes.append(
-                code_tokenizer(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
+                code_tokenizer.encode(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
                                truncation=True, return_tensors="pt"))
             self.labels.append(label)
 
