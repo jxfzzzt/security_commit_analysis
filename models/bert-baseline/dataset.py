@@ -6,13 +6,12 @@ sys.path.append('../')
 sys.path.append('../../')
 sys.path.append('../../../')
 
-import torch
 import numpy as np
 import pandas as pd
 import torch.utils.data as Data
 from config import *
-from transformers import BertTokenizer, BertModel
-from transformers import AutoTokenizer, AutoModel
+from transformers import BertTokenizer
+from transformers import AutoTokenizer
 
 message_tokenizer = BertTokenizer.from_pretrained(message_model_name)
 code_tokenizer = AutoTokenizer.from_pretrained(code_model_name)
@@ -27,8 +26,21 @@ class Dataset(torch.utils.data.Dataset):
         for message, code, label in data_list:
             self.messages.append(
                 message_tokenizer(message, padding='max_length', max_length=512, truncation=True, return_tensors="pt"))
+
+            lines = code.split('\n')
+            added_lines = []
+            deleted_lines = []
+            for line in lines:
+                if line.startswith('+') and not line.startswith('+++'):
+                    added_lines.append(line[1:])
+                elif line.startswith('-') and not line.startswith('---'):
+                    deleted_lines.append(line[1:])
+            added_str = ' '.join(added_lines).strip()
+            deleted_str = ' '.join(deleted_lines).strip()
+
             self.codes.append(
-                code_tokenizer(code, padding='max_length', max_length=512, truncation=True, return_tensors="pt"))
+                code_tokenizer(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
+                               truncation=True, return_tensors="pt"))
             self.labels.append(label)
 
     def classes(self):

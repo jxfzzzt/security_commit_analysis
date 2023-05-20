@@ -44,9 +44,9 @@ class SecurityCommitModel(nn.Module):
     def forward(self, message_input, message_mask, code_input, code_mask):
         message_embedding = self.message_encoder(message_input, message_mask)
         code_embedding = self.code_encoder(code_input, code_mask)
-        # embedding = torch.cat((message_embedding, code_embedding), dim=-1)
-        # X = self.dropout(embedding)
-        # X = self.linear1(message_embedding)
-        X = self.relu(message_embedding)
+        embedding = torch.cat((message_embedding, code_embedding), dim=-1)
+        X = self.dropout(embedding)
+        X = self.linear1(X)
+        X = self.relu(X)
         X = self.linear2(X)
         return X
