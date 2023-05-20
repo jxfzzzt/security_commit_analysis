@@ -4,6 +4,14 @@ tensorboard --logdir=./logs_train
 """
 import sys
 
+import resource
+
+# 设置最大可用的内存大小（以字节为单位）
+# 这里将内存限制设置为500000MB
+memory_limit_mb = 500000
+memory_limit_bytes = memory_limit_mb * 1024 * 1024
+resource.setrlimit(resource.RLIMIT_AS, (memory_limit_bytes, memory_limit_bytes))
+
 sys.path.append('../')
 sys.path.append('../../')
 sys.path.append('../../../')
