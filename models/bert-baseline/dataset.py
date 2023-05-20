@@ -32,12 +32,13 @@ class Dataset(torch.utils.data.Dataset):
             deleted_lines = []
             for line in lines:
                 if line.startswith('+') and not line.startswith('+++'):
-                    added_lines.append(line[1:])
+                    added_lines.append(line[1:].strip())
                 elif line.startswith('-') and not line.startswith('---'):
-                    deleted_lines.append(line[1:])
+                    deleted_lines.append(line[1:].strip())
             added_str = ' '.join(added_lines).strip()
             deleted_str = ' '.join(deleted_lines).strip()
-
+            print('add', added_str)
+            print('delete', deleted_str)
             self.codes.append(
                 code_tokenizer(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
                                truncation=True, return_tensors="pt"))
@@ -119,6 +120,8 @@ def split_data(non_vuln_data_list, vuln_data_list):
 
 def get_loader():
     non_vuln_data_list, vuln_data_list = read_data()
+    non_vuln_data_list = non_vuln_data_list[:5000]
+    vuln_data_list = vuln_data_list[:5000]
     print(len(non_vuln_data_list), len(vuln_data_list))
     train_data, valid_data, test_data = split_data(non_vuln_data_list, vuln_data_list)
     train_dataset = Dataset(train_data)
