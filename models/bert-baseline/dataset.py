@@ -40,7 +40,7 @@ class Dataset(torch.utils.data.Dataset):
             # print('add', added_str)
             # print('delete', deleted_str)
             self.codes.append(
-                code_tokenizer.encode(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
+                code_tokenizer(text=added_str, text_pair=deleted_str, padding='max_length', max_length=512,
                                truncation=True, return_tensors="pt"))
             self.labels.append(label)
 
@@ -120,8 +120,8 @@ def split_data(non_vuln_data_list, vuln_data_list):
 
 def get_loader():
     non_vuln_data_list, vuln_data_list = read_data()
-    non_vuln_data_list = non_vuln_data_list[:5000]
-    vuln_data_list = vuln_data_list[:5000]
+    non_vuln_data_list = non_vuln_data_list[:3000]
+    vuln_data_list = vuln_data_list[:3000]
     print(len(non_vuln_data_list), len(vuln_data_list))
     train_data, valid_data, test_data = split_data(non_vuln_data_list, vuln_data_list)
     train_dataset = Dataset(train_data)
@@ -140,6 +140,7 @@ if __name__ == '__main__':
     for message, code, label in train_loader:
         print(message['input_ids'].shape, message['attention_mask'].shape)
         print(code['input_ids'].shape, code['attention_mask'].shape)
+        # print(code.shape)
         print(label.shape)
-        print(message['input_ids'])
+        # print(message['input_ids'])
         break
